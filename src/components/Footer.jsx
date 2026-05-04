@@ -84,10 +84,8 @@ function Footer() {
                     />
                   </svg>
                   <span className="text-left">
-                    Địa chỉ: Tầng 10, Tòa E, Trường Đại học Công nghệ Thông tin,
-                    ĐHQG-HCM.
-                    <br />
-                    Khu phố 6, Phường Linh Trung, Thành phố Thủ Đức, TP HCM
+                    Địa chỉ: Tầng 10, tòa nhà E - trường Đại học Công nghệ Thông
+                    tin, ĐHQG-HCM.
                   </span>
                 </li>
                 <li className="flex items-center gap-3">

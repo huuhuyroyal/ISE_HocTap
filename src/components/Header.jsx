@@ -15,6 +15,14 @@ function Header() {
                 alt="ISE Logo"
                 className="h-23 md:h-20 w-auto drop-shadow-md"
               />
+              <div className="flex flex-col pt-1 md:pt-2">
+                <h3 className="text-lg font-bold leading-snug">
+                  ĐOÀN KHOA KHOA HỌC VÀ KỸ THUẬT THÔNG TIN
+                </h3>
+                <span className="text-sm mt-1 font-medium">
+                  NHIỆM KỲ 2024 - 2027
+                </span>
+              </div>
             </Link>
           </div>
           <nav className="flex gap-6 items-center text-lg">
