@@ -11,7 +11,7 @@ function Footer() {
               <img
                 src="/[_] biểu trưng final.png"
                 alt="ISE Logo"
-                className="h-14 md:h-16 w-auto drop-shadow-md shrink-0"
+                className="h-14 md:h-18 w-auto drop-shadow-md shrink-0"
               />
               <div className="flex flex-col pt-1 md:pt-2">
                 <h3 className="text-sm font-bold leading-snug">
@@ -33,7 +33,7 @@ function Footer() {
           {/* Truy cập nhanh */}
           <div className="w-full md:w-1/4 flex md:justify-center">
             <div className="w-full md:w-auto md:pt-3">
-              <h4 className="font-bold text-white mb-5 text-base md:pt-1">
+              <h4 className="font-bold text-white mb-5 text-base md:pt-0">
                 Truy cập nhanh
               </h4>
               <ul className="space-y-4">
@@ -59,7 +59,7 @@ function Footer() {
           {/* Liên hệ */}
           <div className="w-full md:w-1/3 flex md:justify-end">
             <div className="w-full md:w-auto md:pt-3">
-              <h4 className="font-bold text-white mb-5 text-base md:pt-1">
+              <h4 className="font-bold text-white mb-5 text-base md:pt-0">
                 Về chúng tôi
               </h4>
               <ul className="space-y-4">

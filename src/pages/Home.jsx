@@ -1,147 +1,103 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import driveData from "../../drive_structure.json";
+import DocumentCard from "../components/DocumentCard";
+
+// Helper to flatten files from drive structure
+const flattenFiles = (nodes, pathArray = []) => {
+  let files = [];
+  for (const node of nodes) {
+    if (node.type === "file") {
+      files.push({ node, pathArray });
+    } else if (node.children) {
+      files = files.concat(flattenFiles(node.children, [...pathArray, node.name]));
+    }
+  }
+  return files;
+};
 
 function Home() {
-  return (
-    <div className="w-full">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-b from-[#2697D6] to-[#4DBEF8] text-white pt-20 pb-16 px-6 text-center overflow-hidden">
-        {/* Container */}
-        <div className="max-w-5xl mx-auto relative z-10 flex flex-col items-center">
-          {/* Badge */}
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
 
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-            Nền tảng học thuật ISE HỌC TẬP
-          </h1>
-          <p className="text-base md:text-lg mb-10 text-sky-50 opacity-95 max-w-3xl">
-            Nơi hội tụ tri thức, tài liệu và kinh nghiệm thực chiến cho sinh
-            viên CNTT. <br />
-            Chúng tôi đồng hành cùng bạn xây dựng lộ trình sự nghiệp vững chắc.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center w-full sm:w-auto">
-            <Link
-              to="/documents"
-              className="border border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/10 transition w-full sm:w-auto"
-            >
-              Tài liệu
-            </Link>
+  const allFiles = flattenFiles(driveData);
+  // Get 4 random or newest files, here we just slice first 4
+  const latestFiles = allFiles.slice(0, 4);
+
+  const handleSearch = (e) => {
+    e?.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/documents?q=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
+  const handleTrendingClick = (term) => {
+    navigate(`/documents?q=${encodeURIComponent(term)}`);
+  };
+
+  return (
+    <div className="w-full bg-white font-sans text-gray-800">
+      {/* Hero Section */}
+      <section className="relative pt-20 pb-24 px-6 text-center overflow-hidden flex flex-col items-center justify-center">
+        <div className="absolute top-10 text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full mb-8">
+          ✦ Kho tàng tri thức sinh viên Việt Nam
+        </div>
+        
+        <h1 className="text-4xl md:text-6xl font-bold mb-4 mt-8 leading-tight tracking-tight">
+          Tìm kiếm & Chia sẻ<br/>
+          <span className="text-blue-600">Tài liệu Học thuật</span>
+        </h1>
+        
+        <p className="text-base md:text-lg mb-10 text-gray-500 max-w-2xl mx-auto">
+          Cộng đồng học thuật lớn nhất dành cho sinh viên. Tiếp cận hàng nghìn đề thi, bài giảng và tài liệu nghiên cứu hoàn toàn miễn phí.
+        </p>
+
+        {/* Search Bar */}
+        <form onSubmit={handleSearch} className="w-full max-w-3xl relative shadow-lg rounded-full flex bg-white p-2 border border-gray-100">
+          <div className="flex-1 flex items-center px-4">
+            <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input 
+              type="text" 
+              placeholder="Nhập tên tài liệu, môn học hoặc mã học phần..." 
+              className="w-full py-3 px-4 outline-none text-gray-700 bg-transparent"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
           </div>
+          <button type="submit" className="bg-blue-700 hover:bg-blue-800 text-white px-8 py-3 rounded-full font-medium transition">
+            Tìm kiếm
+          </button>
+        </form>
+
+        {/* Trending */}
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-sm text-gray-500">
+          <span>Xu hướng:</span>
+          <span onClick={() => handleTrendingClick("CTRR")} className="px-4 py-1.5 border border-gray-200 rounded-full cursor-pointer hover:bg-gray-50 transition">Cấu trúc rời rạc</span>
+          <span onClick={() => handleTrendingClick("DSA")} className="px-4 py-1.5 border border-gray-200 rounded-full cursor-pointer hover:bg-gray-50 transition">Cấu trúc dữ liệu</span>
+          <span onClick={() => handleTrendingClick("OOP")} className="px-4 py-1.5 border border-gray-200 rounded-full cursor-pointer hover:bg-gray-50 transition">Lập trình HĐT</span>
+          <span onClick={() => handleTrendingClick("Nhập Môn Mạng")} className="px-4 py-1.5 border border-gray-200 rounded-full cursor-pointer hover:bg-gray-50 transition">Mạng máy tính</span>
         </div>
       </section>
 
-      {/* Core Values Section */}
-      <section className="bg-[#F8FAFC] py-24 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16 relative">
-            <h2 className="text-3xl font-bold text-gray-800">
-              Giá trị cốt lõi của ISE HỌC TẬP
-            </h2>
-            <div className="w-12 h-1 bg-[#2697D6] mx-auto mt-5 rounded-full"></div>
+      {/* Latest Documents Section */}
+      <section className="bg-gray-50 py-20 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex justify-between items-end mb-10">
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">Tài liệu mới nhất</h2>
+              <p className="text-gray-500">Cập nhật những tài liệu vừa được cộng đồng chia sẻ</p>
+            </div>
+            <Link to="/documents" className="text-blue-600 font-medium hover:text-blue-800 transition flex items-center gap-1">
+              Xem tất cả thư viện <span aria-hidden="true">&rarr;</span>
+            </Link>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Card 1 */}
-            <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition border border-gray-100 flex flex-col hover:-translate-y-1">
-              <div className="w-12 h-12 bg-[#E2F3FB] rounded-xl flex justify-center items-center text-[#2697D6] mb-6">
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-lg font-bold mb-3 text-gray-800">
-                Tài liệu học tập
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Hệ thống bài giảng, giáo trình được cập nhật liên tục từ các
-                nguồn uy tín toàn cầu.
-              </p>
-            </div>
-
-            {/* Card 2 */}
-            <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition border border-gray-100 flex flex-col hover:-translate-y-1">
-              <div className="w-12 h-12 bg-[#E2F3FB] rounded-xl flex justify-center items-center text-[#2697D6] mb-6">
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-lg font-bold mb-3 text-gray-800">
-                Lộ trình Code
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Hướng dẫn thực hành từ cơ bản đến nâng cao cho các Framework và
-                ngôn ngữ phổ biến nhất.
-              </p>
-            </div>
-
-            {/* Card 3 */}
-            <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition border border-gray-100 flex flex-col hover:-translate-y-1">
-              <div className="w-12 h-12 bg-[#E2F3FB] rounded-xl flex justify-center items-center text-[#2697D6] mb-6">
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-lg font-bold mb-3 text-gray-800">
-                Cộng đồng ISE
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Mạng lưới kết nối sinh viên và giảng viên, cùng nhau giải đáp
-                thắc mắc và phát triển.
-              </p>
-            </div>
-
-            {/* Card 4 */}
-            <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition border border-gray-100 flex flex-col hover:-translate-y-1">
-              <div className="w-12 h-12 bg-[#E2F3FB] rounded-xl flex justify-center items-center text-[#2697D6] mb-6">
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-lg font-bold mb-3 text-gray-800">
-                Kỹ năng nghề
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Các buổi Workshop kỹ năng mềm, tư vấn hướng nghiệp và chuẩn bị
-                CV chuyên nghiệp.
-              </p>
-            </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {latestFiles.map((fileData, index) => (
+              <DocumentCard key={index} node={fileData.node} pathArray={fileData.pathArray} />
+            ))}
           </div>
         </div>
       </section>
